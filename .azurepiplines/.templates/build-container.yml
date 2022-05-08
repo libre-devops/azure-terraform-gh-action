@@ -1,0 +1,77 @@
+---
+parameters:
+
+  - name: USERNAME
+    displayName: "Username to be passed for registry login"
+    type: string
+
+  - name: PASSWORD
+    displayName: "Password or access token for registry login"
+    type: string
+
+  - name: CONTEXT
+    displayName: "The the path to your dockerfile"
+    type: string
+
+  - name: DOCKERFILE_NAME
+    displayName: "The name of the Dockerfile"
+    default: "Dockerfile"
+    type: string
+
+  - name: NORMAL_USER
+    displayName: "The name for the container user"
+    default: "lbdo"
+    type: string
+
+  - name: REGISTRY
+    displayName: "The target registry"
+    default: "ghcr.io"
+    type: string
+
+  - name: IMAGE_NAME
+    displayName: "The name of the image"
+    type: string
+
+  - name: TAGS
+    displayName: "The tag of the image"
+    default: ":latest"
+    type: string
+
+  - name: HOSTED_AGENT_IMAGE
+    displayName: "The name of the vmImage for Azure Hosted Pools"
+    default: "ubuntu-latest"
+    type: string
+
+################## DO NOT EDIT ANYTHING PAST HERE UNLESS YOU KNOW WHAT YOU ARE DOING ##################
+
+jobs:
+  - job: build_container
+    pool:
+      vmImage: ${{ parameters.HOSTED_AGENT_IMAGE }}
+    workspace:
+      clean: all
+    displayName: Build Image - ${{ parameters.IMAGE_NAME }}${{ parameters.TAGS }}
+    timeoutInMinutes: 120
+
+    steps:
+
+      - checkout: self
+
+      - pwsh: |
+          
+          docker login -u ${{ parameters.USERNAME }} -p ${{ parameters.PASSWORD }} ${{ parameters.REGISTRY }} ; `
+          
+          docker build `
+          --file=${{ parameters.DOCKERFILE_NAME }} `
+          --tag="${{ parameters.REGISTRY }}/${{ parameters.USERNAME }}/${{ parameters.IMAGE_NAME }}$${{ parameters.TAGS }}" `
+          --build-arg PYTHON3_VERSION=${{ parameters.PYTHON3_VERSION }} `
+          --build-arg ACCEPT_EULA=y `
+          --build-arg NORMAL_USER=${{ parameters.NORMAL_USER }} `
+          . ; `
+  
+          docker push "${{ parameters.REGISTRY }}/${{ parameters.USERNAME }}/${{ parameters.IMAGE_NAME }}${{ parameters.TAGS }}"
+        
+          
+          docker logout ${{ parameters.REGISTRY }}
+        displayName: Run Docker Login, Build and Logout
+        workingDirectory: ${{ parameters.CONTEXT }}
