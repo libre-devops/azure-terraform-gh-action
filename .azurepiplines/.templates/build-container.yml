@@ -58,7 +58,6 @@ jobs:
       - checkout: self
 
       - pwsh: |
-          
           docker login -u ${{ parameters.USERNAME }} -p ${{ parameters.PASSWORD }} ${{ parameters.REGISTRY }} ; `
           
           docker build `
