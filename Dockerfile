@@ -1,5 +1,5 @@
 #Use supplier image
-FROM docker.io/ubuntu:latest
+FROM docker.io/ubuntu:focal
 
 LABEL org.opencontainers.image.source=https://github.com/libre-devops/azure-terraform-gh-action
 
@@ -33,40 +33,46 @@ RUN mkdir -p /ldo && \
     libffi-dev \
     libicu-dev \
     make \
-    sudo \
     software-properties-common \
     libsqlite3-dev \
     libssl-dev\
+    unzip \
     wget \
+    zip  \
     zlib1g-dev && \
                 useradd -m -s /bin/bash linuxbrew && \
                 usermod -aG sudo linuxbrew &&  \
                 mkdir -p /home/linuxbrew/.linuxbrew && \
-                chown -R linuxbrew: /home/linuxbrew/.linuxbrew && \
-    apt-get autoremove
+                chown -R linuxbrew: /home/linuxbrew/.linuxbrew
 
-#Prepare container for Azure DevOps script execution
 WORKDIR /ldo
 
-#Set as unpriviledged user for default container execution
 USER linuxbrew
 
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bash_profile && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bashrc && \
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
+    brew install cowsay
+
 USER root
 RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bashrc && \
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
+    brew install cowsay
+
 USER root
 
 #Set User Path with expected paths for new packages
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/go:/usr/local/go/dev/bin:/usr/local/bin/python3:/home/linuxbrew/.linuxbrew/bin:/home/${NORMAL_USER}/.local/bin:${PATH}"
 RUN echo $PATH > /etc/environment
+
+#Install User Packages
+RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \
+    echo 'alias powershell="pwsh"' >> /root/.bashrc
 
 COPY entrypoint.sh /home/${NORMAL_USER}/entrypoint.sh
 RUN chmod +rx /home/${NORMAL_USER}/entrypoint.sh
