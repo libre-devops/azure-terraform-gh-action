@@ -1,5 +1,5 @@
 #Use supplier image
-FROM docker.io/ubuntu:focal
+FROM docker.io/ubuntu:latest
 
 LABEL org.opencontainers.image.source=https://github.com/libre-devops/azure-terraform-gh-action
 
