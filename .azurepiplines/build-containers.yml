@@ -76,7 +76,7 @@ parameters:
   - name: TEMPLATE_PATH
     displayName: "The name of the variable group holding the secrets"
     type: string
-    default: "templates/build-container.yml"
+    default: ".templates/build-container.yml"
 
 variables:
   - group: ${{ parameters.SECRETS_VARIABLE_GROUP }}
