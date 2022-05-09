@@ -1,5 +1,5 @@
 #Use supplier image
-FROM docker.io/ubuntu:latest
+FROM docker.io/ubuntu:focal
 
 LABEL org.opencontainers.image.source=https://github.com/libre-devops/terraform-gh-action
 
@@ -29,8 +29,6 @@ RUN mkdir -p /ldo && \
     gcc \
     gnupg \
     gnupg2 \
-    git \
-    jq \
     libffi-dev \
     libicu-dev \
     make \
@@ -86,9 +84,6 @@ ENV _CONTAINERS_USERNS_CONFIGURED=""
 #Prepare container for Azure DevOps script execution
 WORKDIR /ldo
 
-#Install Azure Modules for Powershell - This can take a while, so setting as final step to shorten potential rebuilds
-RUN pwsh -Command Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted ; pwsh -Command Install-Module -Name Az -Force -AllowClobber -Scope AllUsers -Repository PSGallery
-
 #Set as unpriviledged user for default container execution
 USER ${NORMAL_USER}
 
@@ -102,6 +97,7 @@ USER root
 
 #Set User Path with expected paths for new packages
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/go:/usr/local/go/dev/bin:/usr/local/bin/python3:/home/linuxbrew/.linuxbrew/bin:/home/${NORMAL_USER}/.local/bin:${PATH}"
+RUN echo $PATH > /etc/environment
 
 #Install User Packages
 RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \

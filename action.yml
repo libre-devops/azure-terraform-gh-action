@@ -1,6 +1,7 @@
 # action.yml
 name: 'Libre DevOps Terraform GitHub Action'
 description: 'The Libre DevOps pipeline to run terraform'
+author: "Craig Thacker <craig@craigthacker.dev>"
 inputs:
   who-to-greet:  # id of input
     description: 'Who to greet'
@@ -14,3 +15,9 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.who-to-greet }}
+    - ${{ inputs.terraform-path }}
+    - ${{ inputs.terraform-storage-rg-name }}
+    - ${{ inputs.terraform-storage-account-name }}
+    - ${{ inputs.terraform-blob-container-name }}
+    - ${{ inputs.terraform-workspace-name }}
+    - ${{ inputs.terraform-compliance-path }}
