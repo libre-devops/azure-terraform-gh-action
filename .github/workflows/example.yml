@@ -34,7 +34,7 @@ jobs:
 
       - name: azure-terraform-build
         id: terraform-build
-        uses: libre-devops/azure-terraform-gh-actionn@1.0.0
+        uses: libre-devops/azure-terraform-gh-actionn@v1
         with:
           terraform-path: "${{ env.GITHUB_WORKSPACE }}/terraform"
           terraform-workspace-name: "dev"
