@@ -12,7 +12,7 @@ on:
 jobs:
   azure-terraform-job:
     name: 'Terraform Build'
-    runs-on: ghcr.io/libre-devops/azure-terraform-gh-action:latest
+    runs-on: ubuntu-latest
     environment: tst
     env:
       PIPELINE_PLAN: "pipeline.plan"
