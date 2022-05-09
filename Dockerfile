@@ -1,7 +1,7 @@
 #Use supplier image
 FROM docker.io/ubuntu:focal
 
-LABEL org.opencontainers.image.source=https://github.com/libre-devops/terraform-gh-action
+LABEL org.opencontainers.image.source=https://github.com/libre-devops/azure-terraform-gh-action
 
 #Set args with blank values - these will be over-written with the CLI
 ARG ACCEPT_EULA="y"
