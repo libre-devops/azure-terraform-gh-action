@@ -32,9 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: azure-terraform-build
+      - name: Libre DevOps Terraform GitHub Action
         id: terraform-build
-        uses: libre-devops/azure-terraform-gh-actionn@v1
+        uses: libre-devops/azure-terraform-gh-action@v1
         with:
           terraform-path: "${{ env.GITHUB_WORKSPACE }}/terraform"
           terraform-workspace-name: "dev"
