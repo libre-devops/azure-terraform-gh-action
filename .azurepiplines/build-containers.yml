@@ -89,5 +89,6 @@ jobs:
       CONTEXT: ${{ parameters.CONTEXT }}
       HOSTED_AGENT_IMAGE: ${{ parameters.HOSTED_AGENT_IMAGE }}
       DOCKERFILE_NAME: ${{ parameters.DOCKERFILE_NAME }}
+      IMAGE_NAME: ${{ parameters.IMAGE_NAME }}
       REGISTRY: ${{ parameters.REGISTRY  }}
       TAGS: ${{ parameters.TAGS }}
