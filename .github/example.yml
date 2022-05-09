@@ -36,7 +36,7 @@ jobs:
           id: terraform-build
           uses: libre-devops/azure-terraform-gh-actionn@v1
           with:
-            terraform-path: "./terraform"
+            terraform-path: "${{ env.GITHUB_WORKSPACE }}/terraform"
             terraform-workspace-name: "dev"
             terraform-backend-storage-rg-name: ${{ secrets.SpokeSaRgName }}
             terraform-backend-storage-account-name: ${{ secrets.SpokeSaName }}
