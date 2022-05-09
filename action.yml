@@ -10,12 +10,10 @@ inputs:
   terraform-path:
     description: 'The absolute path in Linux format to your terraform code'
     required: true
-    default: '.'
 
   terraform-workspace-name:
     description: 'The name of a terraform workspace, if using one'
-    required: false
-    default: '.'
+    required: true
 
   terraform-backend-storage-rg-name:
     description: 'The name of resource group your storage account exists in,  needed for state file storage'
@@ -51,11 +49,16 @@ inputs:
 
   terraform-compliance-path:
     description: 'The path to your terraform-compliance policies if used'
-    required: false
+    required: true
 
   checkov-skipped-tests:
     description: 'The CKV codes you wish to skip, if any and if used.'
-    required: false
+    required: true
+
+  run-terrafrom-destroy:
+    description: 'The CKV codes you wish to skip, if any and if used.'
+    required: true
+    default: "false"
 
 runs:
   using: 'docker'
@@ -66,6 +69,7 @@ runs:
     - ${{ inputs.terraform-backend-storage-rg-name }}
     - ${{ inputs.terraform-backend-storage-account-name }}
     - ${{ inputs.terraform-backend-blob-container-name }}
+    - ${{ inputs.terraform-backend-storage-access-key }}
     - ${{ inputs.terraform-backend-state-name }}
     - ${{ inputs.terraform-provider-client-id }}
     - ${{ inputs.terraform-provider-client-secret }}
@@ -73,3 +77,4 @@ runs:
     - ${{ inputs.terraform-provider-tenant-id }}
     - ${{ inputs.terraform-compliance-path }}
     - ${{ inputs.checkov-skipped-tests }}
+    - ${{ inputs.run-terraform-destroy }}
