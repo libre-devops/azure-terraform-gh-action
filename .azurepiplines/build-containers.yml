@@ -45,7 +45,7 @@ parameters:
 
   - name: IMAGE_NAME
     displayName: "The name of the image"
-    default: "terraform-gh-action"
+    default: "azure-terraform-gh-action"
     type: string
 
   - name: TAGS
