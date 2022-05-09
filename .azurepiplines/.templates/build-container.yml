@@ -64,7 +64,6 @@ jobs:
           docker build `
           --file=${{ parameters.DOCKERFILE_NAME }} `
           --tag="${{ parameters.REGISTRY }}/${{ parameters.USERNAME }}/${{ parameters.IMAGE_NAME }}$${{ parameters.TAGS }}" `
-          --build-arg PYTHON3_VERSION=${{ parameters.PYTHON3_VERSION }} `
           --build-arg ACCEPT_EULA=y `
           --build-arg NORMAL_USER=${{ parameters.NORMAL_USER }} `
           . ; `

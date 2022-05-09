@@ -90,5 +90,4 @@ jobs:
       HOSTED_AGENT_IMAGE: ${{ parameters.HOSTED_AGENT_IMAGE }}
       DOCKERFILE_NAME: ${{ parameters.DOCKERFILE_NAME }}
       REGISTRY: ${{ parameters.REGISTRY  }}
-      PYTHON3_VERSION: ${{ parameters.PYTHON3_VERSION }}
       TAGS: ${{ parameters.TAGS }}
