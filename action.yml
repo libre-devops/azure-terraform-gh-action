@@ -2,22 +2,74 @@
 name: 'Libre DevOps Terraform GitHub Action'
 description: 'The Libre DevOps pipeline to run terraform'
 author: "Craig Thacker <craig@craigthacker.dev>"
+branding:
+  icon: 'terminal'
+  color: 'green'
+
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  terraform-path:
+    description: 'The absolute path in Linux format to your terraform code'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: '.'
+
+  terraform-workspace-name:
+    description: 'The name of a terraform workspace, if using one'
+    required: false
+    default: '.'
+
+  terraform-backend-storage-rg-name:
+    description: 'The name of resource group your storage account exists in,  needed for state file storage'
+    required: true
+
+  terraform-backend-storage-account-name:
+    description: 'The name of your storage account ,  needed for state file storage'
+    required: true
+
+  terraform-backend-blob-container-name:
+    description: 'The name of your storage account blob container,  needed for state file storage'
+    required: true
+
+  terraform-backend-blob-state-name:
+    description: 'The name of your statefilee,  needed for state terraform'
+    required: true
+
+  terraform-provider-client-id:
+    description: 'The client ID for your service principal, needed to authenticate to your tenant'
+    required: true
+
+  terraform-provider-client-secret:
+    description: 'The client secret for your service principal, needed to authenticate to your tenant'
+    required: true
+
+  terraform-provider-subscription-id:
+    description: 'The subscription id of the subscription you wish to deploy to, needed to authenticate to your tenant'
+    required: true
+
+  terraform-provider-tenant_id:
+    description: 'The tenant id of which contains subscription you wish to deploy to, needed to authenticate to your tenant'
+    required: true
+
+  terraform-compliance-path:
+    description: 'The path to your terraform-compliance policies if used'
+    required: false
+
+  checkov-skipped-tests:
+    description: 'The CKV codes you wish to skip, if any and if used.'
+    required: false
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
     - ${{ inputs.terraform-path }}
-    - ${{ inputs.terraform-storage-rg-name }}
-    - ${{ inputs.terraform-storage-account-name }}
-    - ${{ inputs.terraform-blob-container-name }}
     - ${{ inputs.terraform-workspace-name }}
+    - ${{ inputs.terraform-backend-storage-rg-name }}
+    - ${{ inputs.terraform-backend-storage-account-name }}
+    - ${{ inputs.terraform-backend-blob-container-name }}
+    - ${{ inputs.terraform-backend-state-name }}
+    - ${{ inputs.terraform-provider-client-id }}
+    - ${{ inputs.terraform-provider-client-secret }}
+    - ${{ inputs.terraform-provider-subscription-id }}
+    - ${{ inputs.terraform-provider-tenant-id }}
     - ${{ inputs.terraform-compliance-path }}
+    - ${{ inputs.checkov-skipped-tests }}

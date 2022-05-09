@@ -27,6 +27,7 @@ RUN mkdir -p /ldo && \
     ca-certificates \
     curl \
     gcc \
+    git  \
     gnupg \
     gnupg2 \
     libffi-dev \
@@ -39,8 +40,10 @@ RUN mkdir -p /ldo && \
     wget \
     zip  \
     zlib1g-dev && \
-                mkdir -p /home/linuxbrew && \
-                chown -R ${NORMAL_USER}:${NORMAL_USER} /home/linuxbrew && \
+                useradd -m -s /bin/bash linuxbrew && \
+                usermod -aG sudo linuxbrew &&  \
+                mkdir -p /home/linuxbrew/.linuxbrew && \
+                chown -R linuxbrew: /home/linuxbrew/.linuxbrew && \
     wget -q https://packages.microsoft.com/config/ubuntu/$(grep -oP '(?<=^DISTRIB_RELEASE=).+' /etc/lsb-release | tr -d '"')/packages-microsoft-prod.deb && \
     dpkg -i packages-microsoft-prod.deb  && rm -rf packages-microsoft-prod.deb && \
     apt-get update && \
@@ -85,10 +88,21 @@ ENV _CONTAINERS_USERNS_CONFIGURED=""
 WORKDIR /ldo
 
 #Set as unpriviledged user for default container execution
-USER ${NORMAL_USER}
+USER linuxbrew
 
-RUN echo -en "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bash_profile && \
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bashrc && \
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
+    curl -s "https://get.sdkman.io" | bash && \
+    brew install cowsay
+
+USER root
+RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew
+
+USER ${NORMAL_USER}
+RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bashrc && \
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
     curl -s "https://get.sdkman.io" | bash && \
     brew install cowsay
@@ -105,4 +119,8 @@ RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \
 
 USER ${NORMAL_USER}
 
-WORKDIR /ldo
+RUN brew install tfsec python3 terraform azure-cli
+RUN pip3 install --user terraform-compliance checkov
+
+COPY entrypoint.sh /home/${NORMAL_USER}
+ENTRYPOINT entrypoint.sh

@@ -1,0 +1,94 @@
+---
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger:
+  branches:
+    include:
+    - main/Dockerfile
+    exclude:
+      - develop
+      - bug*
+      - feature*
+      - main/containers/linux*
+      - main/.azurepipelines/*
+      - README.md
+
+schedules:
+- cron: 0 19 * * 0
+  displayName: "Weekly Build"
+  branches:
+    include: [ main ]
+    exclude: [ develop ]
+  always: true
+
+parameters:
+
+  - name: CONTEXT
+    displayName: "The the path to your dockerfile"
+    default: "."
+    type: string
+
+  - name: DOCKERFILE_NAME
+    displayName: "The name of the Dockerfile"
+    default: "Dockerfile"
+    type: string
+
+  - name: NORMAL_USER
+    displayName: "The name for the container user, for Windows, can only be ContainerAdministrator or ContainerUser"
+    default: "ldo"
+    type: string
+
+  - name: REGISTRY
+    displayName: "The target registry"
+    default: "ghcr.io"
+    type: string
+
+  - name: IMAGE_NAME
+    displayName: "The name of the image"
+    default: "terraform-gh-action"
+    type: string
+
+  - name: TAGS
+    displayName: "The tag of the image"
+    default: ":latest"
+    type: string
+
+  - name: HOSTED_AGENT_IMAGE
+    displayName: "The name of the vmImage"
+    default: "ubuntu-latest"
+    type: string
+
+  - name: SECRETS_VARIABLE_GROUP
+    displayName: "The name of the variable group holding the secrets"
+    default: "LBDO_DOCKER_SECRETS"
+    type: string
+
+  - name: USERNAME
+    displayName: "Username to be passed for registry login"
+    default: $(USERNAME)
+    type: string
+
+  - name: PASSWORD
+    displayName: "Password or access token for registry login"
+    default: $(PASSWORD)
+    type: string
+
+  - name: TEMPLATE_PATH
+    displayName: "The name of the variable group holding the secrets"
+    type: string
+    default: "templates/build-container.yml"
+
+variables:
+  - group: ${{ parameters.SECRETS_VARIABLE_GROUP }}
+
+jobs:
+  - template: ${{ parameters.TEMPLATE_PATH }}
+    parameters:
+      USERNAME: ${{ parameters.USERNAME }}
+      PASSWORD: ${{ parameters.PASSWORD }}
+      CONTEXT: ${{ parameters.CONTEXT }}
+      HOSTED_AGENT_IMAGE: ${{ parameters.HOSTED_AGENT_IMAGE }}
+      DOCKERFILE_NAME: ${{ parameters.DOCKERFILE_NAME }}
+      REGISTRY: ${{ parameters.REGISTRY  }}
+      PYTHON3_VERSION: ${{ parameters.PYTHON3_VERSION }}
+      TAGS: ${{ parameters.TAGS }}
