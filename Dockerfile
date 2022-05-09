@@ -117,11 +117,12 @@ RUN echo $PATH > /etc/environment
 RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \
     echo 'alias powershell="pwsh"' >> /root/.bashrc
 
+COPY entrypoint.sh /home/${NORMAL_USER}
+RUN chmod +rx /home/${NORMAL_USER}/entrypoint.sh
+
 USER ${NORMAL_USER}
 
 RUN brew install tfsec python3 terraform azure-cli
 RUN pip3 install --user terraform-compliance checkov
 
-COPY entrypoint.sh /home/${NORMAL_USER}
-RUN chmod +x /home/${NORMAL_USER}/entrypoint.sh
 ENTRYPOINT entrypoint.sh
