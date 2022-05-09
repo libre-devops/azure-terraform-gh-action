@@ -36,53 +36,13 @@ RUN mkdir -p /ldo && \
     software-properties-common \
     libsqlite3-dev \
     libssl-dev\
-    unzip \
     wget \
-    zip  \
     zlib1g-dev && \
                 useradd -m -s /bin/bash linuxbrew && \
                 usermod -aG sudo linuxbrew &&  \
                 mkdir -p /home/linuxbrew/.linuxbrew && \
                 chown -R linuxbrew: /home/linuxbrew/.linuxbrew && \
-    wget -q https://packages.microsoft.com/config/ubuntu/$(grep -oP '(?<=^DISTRIB_RELEASE=).+' /etc/lsb-release | tr -d '"')/packages-microsoft-prod.deb && \
-    dpkg -i packages-microsoft-prod.deb  && rm -rf packages-microsoft-prod.deb && \
-    apt-get update && \
-    apt-get install -y powershell
-
-RUN echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
-curl -L "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key" | apt-key add - && \
-apt-get update && \
-apt-get -y upgrade && \
-apt-get -y install container-tools && \
-apt-get install -y crun podman fuse-overlayfs
-
-RUN curl -s "https://get.sdkman.io" | bash
-
-RUN useradd podman; \
-echo podman:10000:5000 > /etc/subuid; \
-echo podman:10000:5000 > /etc/subgid;
-
-VOLUME /var/lib/containers
-RUN mkdir -p /home/podman/.local/share/containers
-RUN chown podman:podman -R /home/podman && usermod -aG podman ${NORMAL_USER}
-VOLUME /home/podman/.local/share/containers
-
-#https://raw.githubusercontent.com/containers/libpod/master/contrib/podmanimage/stable/containers.conf
-ADD containers.conf /etc/containers/containers.conf
-#https://raw.githubusercontent.com/containers/libpod/master/contrib/podmanimage/stable/podman-containers.conf
-ADD podman-containers.conf /home/podman/.config/containers/containers.conf
-
-ADD storage.conf /etc/containers/storage.conf
-
-#chmod containers.conf and adjust storage.conf to enable Fuse storage.
-RUN chmod 644 /etc/containers/containers.conf; sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' /etc/containers/storage.conf
-RUN mkdir -p /var/lib/shared/overlay-images /var/lib/shared/overlay-layers /var/lib/shared/vfs-images /var/lib/shared/vfs-layers; \
-    touch /var/lib/shared/overlay-images/images.lock; \
-    touch /var/lib/shared/overlay-layers/layers.lock; \
-    touch /var/lib/shared/vfs-images/images.lock; \
-    touch /var/lib/shared/vfs-layers/layers.lock
-
-ENV _CONTAINERS_USERNS_CONFIGURED=""
+    apt-get autoremove
 
 #Prepare container for Azure DevOps script execution
 WORKDIR /ldo
@@ -93,29 +53,19 @@ USER linuxbrew
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bash_profile && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bashrc && \
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
-    curl -s "https://get.sdkman.io" | bash && \
-    brew install cowsay
-
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 USER root
 RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bashrc && \
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
-    curl -s "https://get.sdkman.io" | bash && \
-    brew install cowsay
-
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 USER root
 
 #Set User Path with expected paths for new packages
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/go:/usr/local/go/dev/bin:/usr/local/bin/python3:/home/linuxbrew/.linuxbrew/bin:/home/${NORMAL_USER}/.local/bin:${PATH}"
 RUN echo $PATH > /etc/environment
-
-#Install User Packages
-RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \
-    echo 'alias powershell="pwsh"' >> /root/.bashrc
 
 COPY entrypoint.sh /home/${NORMAL_USER}/entrypoint.sh
 RUN chmod +rx /home/${NORMAL_USER}/entrypoint.sh
