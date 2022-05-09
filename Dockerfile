@@ -33,6 +33,7 @@ RUN mkdir -p /ldo && \
     libffi-dev \
     libicu-dev \
     make \
+    sudo \
     software-properties-common \
     libsqlite3-dev \
     libssl-dev\
