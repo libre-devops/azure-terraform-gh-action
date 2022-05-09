@@ -3,7 +3,7 @@ services:
 
   tf-gh-action:
     build: .
-    image: "ghcr.io/libre-devops/terraform-gh-action:latest"
+    image: "ghcr.io/libre-devops/azure-terraform-gh-action:latest"
     container_name: "tf-gh-action"
     restart: unless-stopped
     privileged: true

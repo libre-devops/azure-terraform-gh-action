@@ -126,4 +126,4 @@ RUN brew install tfsec python3 terraform azure-cli
 RUN pip3 install --user terraform-compliance checkov
 
 WORKDIR /home/${NORMAL_USER}
-ENTRYPOINT entrypoint.sh
+ENTRYPOINT /home/$NORMAL_USER/entrypoint.sh
