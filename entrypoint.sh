@@ -139,6 +139,8 @@ checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
 terraform apply -auto-approve pipeline.plan
 
+print_success "Build ran sccessfully" || print_error "Build Failed"
+
 elif [ "${run_terrafrom_destroy}" = "true" ]; then
 
 terraform init \
@@ -156,6 +158,7 @@ terraform validate && \
 terraform plan -destroy -out pipeline.plan && \
 terraform apply -auto-approve pipeline.plan
 
+print_success "Build ran sccessfully" || print_error "Build Failed"
+
 fi
 
-&& print_success "Build ran sccessfully" || print_error "Build Failed"
