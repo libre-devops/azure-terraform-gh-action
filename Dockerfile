@@ -1,5 +1,5 @@
 #Use own image
-FROM ghcr.io/libre-devops/azure-terraform-gh-action:latest
+FROM ghcr.io/libre-devops/azure-terraform-gh-action-base:latest
 
 LABEL org.opencontainers.image.source=https://github.com/libre-devops/azure-terraform-gh-action
 
