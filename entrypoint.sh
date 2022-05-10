@@ -40,7 +40,7 @@ if [[ -n "${2}" ]]; then
         mkdir -p ".terraform" && \
         touch ".terraform/environment"
     terraform_workspace_name="${2}" && \
-        printf '%s' "${terraform_workspace_name}" | tee .terraform/environment
+        printf '%s' "${terraform_workspace_name}" | tee .terraform/environment >/dev/null
 else
     print_error "Workspace variable appears to be empty or invalid, ensure that you can see - ${2} - if you cannot, set your workspace as a plain text chars and try again - Error - LDO_TF_WORKSPACE" && exit 1
 fi
