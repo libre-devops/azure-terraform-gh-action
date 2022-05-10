@@ -110,7 +110,7 @@ fi
 if [[ -n "${13}" ]]; then
     checkov_skipped_test="${13}"
 else
-    checkov_skipped_test=" " && print_alert "CheckOV tests appeared null or invalid, trying to continue"
+    checkov_skipped_test=" "
 fi
 
 if [[ -n "${14}" ]]; then
