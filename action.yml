@@ -58,6 +58,7 @@ inputs:
   checkov-skipped-tests:
     description: 'The CKV codes you wish to skip, if any.'
     required: true
+    default: ""
 
   run-terraform-destroy:
     description: 'Do you want to run terraform destroy? - Set to true to trigger terraform plan -destroy'
