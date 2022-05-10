@@ -1,5 +1,9 @@
 name: 'Terraform Apply'
 
+# Allow run manually
+on:
+  workflow_dispatch:
+
 jobs:
   azure-terraform-job:
     name: 'Terraform Build'
