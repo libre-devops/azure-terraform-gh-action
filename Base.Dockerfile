@@ -19,7 +19,6 @@ USER root
 RUN mkdir -p /ldo && \
     #Make unpriviledged user
     useradd -ms /bin/bash ${NORMAL_USER} && \
-    chown -R ${NORMAL_USER} /ldo && \
     apt-get update -y && apt-get dist-upgrade -y && apt-get install -y \
     apt-transport-https \
     bash \
@@ -58,7 +57,6 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
 
 USER root
 RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew && \
-    chmod -R 777 /ldo
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
@@ -77,4 +75,6 @@ USER ${NORMAL_USER}
 RUN brew install tfsec python3 terraform azure-cli
 RUN pip3 install --user terraform-compliance checkov
 
-WORKDIR /ldo
+USER root 
+
+WORKDIR /
