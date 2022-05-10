@@ -14,9 +14,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 COPY entrypoint.sh /ldo/entrypoint.sh
-RUN chmod 777 -R /ldo
-
-USER ${NORMAL_USER}
 
 WORKDIR /ldo
 ENTRYPOINT ["/ldo/entrypoint.sh"]
