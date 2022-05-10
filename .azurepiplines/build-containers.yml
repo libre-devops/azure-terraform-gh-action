@@ -30,7 +30,7 @@ parameters:
 
   - name: DOCKERFILE_NAME
     displayName: "The name of the Dockerfile"
-    default: "Dockerfile"
+    default: "Base.Dockerfile"
     type: string
 
   - name: NORMAL_USER
@@ -45,7 +45,7 @@ parameters:
 
   - name: IMAGE_NAME
     displayName: "The name of the image"
-    default: "azure-terraform-gh-action"
+    default: "azure-terraform-gh-action-base"
     type: string
 
   - name: TAGS
