@@ -108,7 +108,7 @@ fi
 if [[ -n "${13}" ]]; then
     checkov_skipped_test="${13}"
 else
-    checkov_skipped_test="" || print_error "Checkov Skipped  is invalid or empty, it appears you have supplied a null value which has parsed incorrectly or some other shenanigan.  Pass a proper string and try again - Error LDO_TF_CHECKOV" && exit 1
+    checkov_skipped_test=" " && print_alert "CheckOV tests appeared null or invalid, trying to continue" || print_error "Checkov Skipped  is invalid or empty, it appears you have supplied a null value which has parsed incorrectly or some other shenanigan.  Pass a proper string and try again - Error LDO_TF_CHECKOV" && exit 1
 fi
 
 if [[ -n "${14}" ]]; then
