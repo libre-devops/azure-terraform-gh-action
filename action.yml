@@ -12,7 +12,7 @@ inputs:
     required: true
 
   terraform-workspace-name:
-    description: 'The name of a terraform workspace, if using one'
+    description: 'The name of a terraform workspace, should be in plain text string
     required: true
 
   terraform-backend-storage-rg-name:
@@ -20,19 +20,19 @@ inputs:
     required: true
 
   terraform-backend-storage-account-name:
-    description: 'The name of your storage account ,  needed for state file storage'
+    description: 'The name of your storage account , needed for state file storage'
     required: true
 
   terraform-backend-blob-container-name:
-    description: 'The name of your storage account blob container,  needed for state file storage'
+    description: 'The name of your storage account blob container, needed for state file storage'
     required: true
 
   terraform-backend-storage-access-key:
-    description: 'The key to access your storage account,  needed for state file storage'
+    description: 'The key to access your storage account, needed for state file storage'
     required: true
 
   terraform-backend-state-name:
-    description: 'The name of your statefilee,  needed for state terraform'
+    description: 'The name of your statefilee, needed for state terraform'
     required: true
 
   terraform-provider-client-id:
@@ -52,17 +52,22 @@ inputs:
     required: true
 
   terraform-compliance-path:
-    description: 'The path to your terraform-compliance policies if used'
+    description: 'The path to your terraform-compliance policies, should be a local path or passed as git: etc'
     required: true
 
   checkov-skipped-tests:
-    description: 'The CKV codes you wish to skip, if any and if used.'
+    description: 'The CKV codes you wish to skip, if any.'
     required: true
 
   run-terraform-destroy:
-    description: 'The CKV codes you wish to skip, if any and if used.'
+    description: 'Do you want to run terraform destroy? - Set to true to trigger terraform plan -destroy'
     required: true
     default: "false"
+    
+  run-terraform-plan-only:
+    description: 'Do you only want to run terraform plan & never run the apply or apply destroy? - Set to true to trigger terraform plan only.'
+    required: true
+    default: "true"
 
 runs:
   using: 'docker'
@@ -82,3 +87,4 @@ runs:
     - ${{ inputs.terraform-compliance-path }}
     - ${{ inputs.checkov-skipped-tests }}
     - ${{ inputs.run-terraform-destroy }}
+    - ${{ inputs.run-terraform-plan-only }}
