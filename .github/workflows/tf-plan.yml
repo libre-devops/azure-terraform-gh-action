@@ -39,6 +39,6 @@ jobs:
           terraform-provider-subscription-id: ${{ secrets.SpokeSubId }}
           terraform-provider-tenant-id: ${{ secrets.SpokeTenantId }}
           terraform-compliance-path: "git:https://github.com/craigthackerx/azure-terraform-compliance-naming-convention.git//?ref=main"
-          checkov-skipped-tests: ""
+          checkov-skipped-tests: "CKV2_AZURE_8"
           run-terraform-destroy: "false"
           run-terraform-plan-only: "true"
