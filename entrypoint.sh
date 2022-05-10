@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 print_success() {
     lightcyan='\033[1;36m'
     nocolor='\033[0m'
@@ -158,7 +160,7 @@ if [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}"  =
 
     checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
-        print_success "Build ran successfully" || print_error "Build Failed" ; exit 1
+        print_success "Build ran successfully" || { print_error "Build Failed" ; exit 1; }
 
     # Run Terraform Plan and Terraform Apply
 elif [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}"  = "false" ]; then
@@ -194,7 +196,7 @@ elif [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}" 
 
     terraform apply -auto-approve pipeline.plan
 
-    print_success "Build ran successfully" || print_error "Build Failed" ; exit 1
+    print_success "Build ran successfully" || { print_error "Build Failed" ; exit 1; }
 
     # Run Terraform Plan -Destroy only
 elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  = "true" ]; then
@@ -212,7 +214,7 @@ elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  
 
         terraform plan -destroy -out pipeline.plan && \
 
-        print_success "Build ran successfully" || print_error "Build Failed" ; exit 1
+        print_success "Build ran successfully" || { print_error "Build Failed" ; exit 1; }
 
     # Run terraform plan -destroy and terraform apply
 elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  = "false" ]; then
@@ -234,7 +236,7 @@ elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  
 
     terraform apply -auto-approve pipeline.plan
 
-    print_success "Build ran successfully" || print_error "Build Failed" ; exit 1
+    print_success "Build ran successfully" || { print_error "Build Failed" ; exit 1; }
 
 else
 
