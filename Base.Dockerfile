@@ -58,7 +58,7 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
 
 USER root
 RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew && \
-    chmod
+    chmod -R 777 /ldo
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
@@ -71,8 +71,6 @@ USER root
 #Set User Path with expected paths for new packages
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/go:/usr/local/go/dev/bin:/usr/local/bin/python3:/home/linuxbrew/.linuxbrew/bin:/home/${NORMAL_USER}/.local/bin:${PATH}"
 RUN echo $PATH > /etc/environment
-
-RUN chmod -R 777 /ldo
 
 USER ${NORMAL_USER}
 
