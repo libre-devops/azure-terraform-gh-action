@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Libre DevOps Terraform GitHub Action
+      - name: Libre DevOps - Run Terraform for Azure - GitHub Action
         id: terraform-build
         uses: libre-devops/azure-terraform-gh-action@v1
         with:

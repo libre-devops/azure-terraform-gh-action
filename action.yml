@@ -1,5 +1,5 @@
 # action.yml
-name: 'Libre DevOps - Run Terraform for Azure-  GitHub Action'
+name: 'Libre DevOps - Run Terraform for Azure -  GitHub Action'
 description: 'The heavily opinionated Libre DevOps Action to run terraform, terraform-compliance, tfsec and checkov, targetting Azure.'
 author: "Craig Thacker <craig@craigthacker.dev>"
 branding:
