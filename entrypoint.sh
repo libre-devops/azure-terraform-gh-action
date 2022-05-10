@@ -20,13 +20,13 @@ print_alert() {
   echo -e "${yellow}$1${nocolor}"
 }
 
-tree .
+tree . && \
 rm -rf .terraform && \
 mkdir -p .terraform && \
 
 if [[ ! -z "${1}" ]]; then
     terraform_path="${1}" && \
-    cd "${terraform_path}" || print_error "Code path is empty or invalid" && exit 1
+    cd "${terraform_path}" && ls -lah || print_error "Code path is empty or invalid" && exit 1
     else
       print_error "Code path is empty or invalid" && exit 1
 fi
