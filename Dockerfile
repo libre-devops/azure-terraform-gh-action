@@ -13,7 +13,6 @@ ENV NORMAL_USER ${NORMAL_USER}
 ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
-COPY entrypoint.sh /ldo/entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /ldo
-ENTRYPOINT ["/ldo/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
