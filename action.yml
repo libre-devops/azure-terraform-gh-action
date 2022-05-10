@@ -27,7 +27,11 @@ inputs:
     description: 'The name of your storage account blob container,  needed for state file storage'
     required: true
 
-  terraform-backend-blob-state-name:
+  terraform-backend-storage-access-key:
+    description: 'The key to access your storage account,  needed for state file storage'
+    required: true
+
+  terraform-backend-state-name:
     description: 'The name of your statefilee,  needed for state terraform'
     required: true
 
@@ -43,7 +47,7 @@ inputs:
     description: 'The subscription id of the subscription you wish to deploy to, needed to authenticate to your tenant'
     required: true
 
-  terraform-provider-tenant_id:
+  terraform-provider-tenant-id:
     description: 'The tenant id of which contains subscription you wish to deploy to, needed to authenticate to your tenant'
     required: true
 
