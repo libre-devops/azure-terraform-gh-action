@@ -34,7 +34,7 @@ if [[ ! -z "${2}" ]]; then
     mkdir -p ".terraform" && \
     touch ".terraform/environment"
     terraform_workspace_name="${2}" && \
-    echo "${terraform_workspace_name}" > ".terraform/environment"
+    printf '%s' "${terraform_workspace_name}" | tee .terraform/environment
     else
        print_error "Workspace name failed to create" && exit 1
 fi
