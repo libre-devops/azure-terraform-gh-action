@@ -20,9 +20,7 @@ print_alert() {
   echo -e "${yellow}$1${nocolor}"
 }
 
-tree . && \
-rm -rf .terraform && \
-mkdir -p .terraform && \
+tree .
 
 if [[ ! -z "${1}" ]]; then
     terraform_path="${1}" && \
@@ -32,6 +30,8 @@ if [[ ! -z "${1}" ]]; then
 fi
 
 if [[ ! -z "${2}" ]]; then
+    rm -rf .terraform && \
+    mkdir -p .terraform && \
     terraform_workspace_name="${2}" && \
     printf '%s' "${terraform_workspace_name}" > .terraform/environment
     else
