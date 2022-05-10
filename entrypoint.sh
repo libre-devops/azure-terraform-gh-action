@@ -133,14 +133,14 @@ terraform validate && \
 terraform plan -out pipeline.plan && \
 terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
 tfsec && \
-terraform show -json pipeline.plan > pipeline.plan.json && \
+terraform show -json pipeline.plan | tee pipeline.plan.json && \
 checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
 terraform apply -auto-approve pipeline.plan
 
 elif [ "${run_terrafrom_destroy}" = "true" ]; then
 
-    terraform init \
+terraform init \
 -backend-config="resource_group_name=${terraform_backend_sa_rg_name}" \
 -backend-config="storage_account_name=${terraform_backend_sa_name}" \
 -backend-config="access_key=${terraform_backend_storage_access_key}" \
