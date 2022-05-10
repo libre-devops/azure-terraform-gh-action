@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -xe
+
 print_success() {
   lightcyan='\033[1;36m'
   nocolor='\033[0m'
@@ -18,6 +20,7 @@ print_alert() {
   echo -e "${yellow}$1${nocolor}"
 }
 
+tree .
 rm -rf .terraform && \
 mkdir -p .terraform && \
 
