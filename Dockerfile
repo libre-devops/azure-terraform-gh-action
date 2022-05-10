@@ -12,7 +12,9 @@ ENV ACCEPT_EULA ${ACCEPT_EULA}
 ENV NORMAL_USER ${NORMAL_USER}
 ENV DEBIAN_FRONTEND=noninteractive
 
+USER root
 COPY entrypoint.sh /ldo/entrypoint.sh
+RUN chmod 777 -R /ldo
 
 USER ${NORMAL_USER}
 
