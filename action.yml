@@ -59,7 +59,7 @@ inputs:
     description: 'The CKV codes you wish to skip, if any and if used.'
     required: true
 
-  run-terrafrom-destroy:
+  run-terraform-destroy:
     description: 'The CKV codes you wish to skip, if any and if used.'
     required: true
     default: "false"
