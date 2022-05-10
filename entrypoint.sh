@@ -190,7 +190,7 @@ elif [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}" 
 
         print_alert "Running checkov now..."
 
-    checkov -f pipeline.plan.json --skip-check ""${checkov_skipped_test}" && \
+    checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
         print_alert "Running terraform apply now..."
 
