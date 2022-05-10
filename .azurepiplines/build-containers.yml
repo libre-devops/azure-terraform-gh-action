@@ -33,11 +33,6 @@ parameters:
     default: "Base.Dockerfile"
     type: string
 
-  - name: NORMAL_USER
-    displayName: "The name for the container user, for Windows, can only be ContainerAdministrator or ContainerUser"
-    default: "ldo"
-    type: string
-
   - name: REGISTRY
     displayName: "The target registry"
     default: "ghcr.io"
