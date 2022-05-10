@@ -26,87 +26,87 @@ mkdir -p .terraform && \
 
 if [[ ! -z "${1}" ]]; then
     terraform_path="${1}" && \
-    cd "${terraform_path}" && ls -lah || print_error "Code path is empty or invalid" && exit 1
+    cd "${terraform_path}" && ls -lah
     else
       print_error "Code path is empty or invalid" && exit 1
 fi
 
 if [[ ! -z "${2}" ]]; then
     terraform_workspace_name="${2}" && \
-    printf '%s' "${terraform_workspace_name}" > .terraform/environment || print_error "Workspace name failed to create" && exit 1
+    printf '%s' "${terraform_workspace_name}" > .terraform/environment
     else
        print_error "Workspace name failed to create" && exit 1
 fi
 
 if [[ ! -z "${3}" ]]; then
-    terraform_backend_sa_rg_name="${3}" || print_error "Variable assignment for backend storage account resource group failed or is invalid" && exit 1
+    terraform_backend_sa_rg_name="${3}"
     else
       print_error "Variable assignment for backend storage account resource group failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${4}" ]]; then
-    terraform_backend_sa_name="${4}" || print_error "Variable assignment for backend storage account name failed or is invalid" && exit 1
+    terraform_backend_sa_name="${4}"
     else
       print_error "Variable assignment for backend storage account name failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${5}" ]]; then
-    terraform_backend_blob_container_name="${5}" || print_error "Variable assignment for backend storage account blob container failed or is invalid" && exit 1
+    terraform_backend_blob_container_name="${5}"
     else
       print_error "Variable assignment for backend storage account blob container failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${6}" ]]; then
-    terraform_backend_storage_access_key="${6}" || print_error "Variable assignment for backend storage access key name failed or is invalid" && exit 1
+    terraform_backend_storage_access_key="${6}"
     else
       print_error "Variable assignment for backend storage access key name has failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${7}" ]]; then
-    terraform_backend_state_name="${7}" || print_error "Variable assignment for backend state name failed or is invalid" && exit 1
+    terraform_backend_state_name="${7}"
     else
       print_error "Variable assignment for backend state name has failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${8}" ]]; then
-    terraform_provider_client_id="${8}" || print_error "Variable assignment for provider client id failed or is invalid" && exit 1
+    terraform_provider_client_id="${8}"
     else
       print_error "Variable assignment for provider client id has failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${9}" ]]; then
-    terraform_provider_client_secret="${9}" || print_error "Variable assignment for provider client secret failed or is invalid" && exit 1
+    terraform_provider_client_secret="${9}"
     else
       print_error "Variable assignment for provider client secret has failed or is invalid" && exit 1
 fi
 
 
 if [[ ! -z "${10}" ]]; then
-    terraform_provider_client_subscription_id="${10}" || print_error "Variable assignment for provider subscription id failed or is invalid" && exit 1
+    terraform_provider_client_subscription_id="${10}"
     else
       print_error "Variable assignment for provider subscritpion id has failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${11}" ]]; then
-    terraform_provider_client_tenant_id="${11}" || print_error "Variable assignment for provider tenant id failed or is invalid" && exit 1
+    terraform_provider_client_tenant_id="${11}"
     else
       print_error "Variable assignment for provider tenant id has failed or is invalid" && exit 1
 fi
 
 if [[ ! -z "${12}" ]]; then
-    terraform_compliance_path="${12}" || print_error "Terraform compliance path is invalid or empty" && exit 1
+    terraform_compliance_path="${12}"
     else
       print_error "Terraform compliance path is invalid or empty" && exit 1
 fi
 
 if [[ ! -z "${13}" ]]; then
-    checkov_skipped_test="${13}" || print_error "Checkov Skipped  is invalid or empty" && exit 1
+    checkov_skipped_test="${13}"
     else
     checkov_skipped_test="" || print_error "Checkov Skipped  is invalid or empty" && exit 1
 fi
 
 if [[ ! -z "${14}" ]]; then
-    run_terrafrom_destroy="${14}" || print_error "Checkov Skipped  is invalid or empty" && exit 1
+    run_terrafrom_destroy="${14}"
     else
     print_error "Terraform destroy is empty" && exit 1
 fi
