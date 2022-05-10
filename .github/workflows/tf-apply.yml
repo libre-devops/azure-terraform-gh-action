@@ -1,28 +1,10 @@
-name: 'Terraform Build'
-
-#Build can only be ran manually or on PR to main
-on:
-  push:
-    branches:
-    - main
-  pull_request:
-    types: [closed]
-  workflow_dispatch:
+name: 'Terraform Apply'
 
 jobs:
   azure-terraform-job:
     name: 'Terraform Build'
     runs-on: ubuntu-latest
     environment: tst
-    env:
-      PIPELINE_PLAN: "pipeline.plan"
-      TERRAFORM_PATH: "terraform"
-      SHORTHAND_PROJECT_NAME: "lbdo"
-      SHORTHAND_ENVIRONMENT: "tst"
-      SHORTHAND_LOCATION: "euw"
-      TERRAFORM_COMPLIANCE_POLICY: "https://github.com/libre-devops/azure-naming-convention.git//?ref=main"
-      TERRAFORM_STATE_NAME: "tst-build"
-
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -50,3 +32,4 @@ jobs:
           terraform-compliance-path: "git:https://github.com/craigthackerx/azure-terraform-compliance-naming-convention.git//?ref=main"
           checkov-skipped-tests: "CKV_AZURE_2"
           run-terraform-destroy: "false"
+          run-terraform-plan-only: "false"

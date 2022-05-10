@@ -26,10 +26,12 @@ checkov
 
 ### Example Usage
 
-```yaml
-name: 'Terraform Build'
+Check out the [workflows](https://github.com/libre-devops/azure-terraform-gh-action/tree/main/.github/workflows) folder for more examples
 
-#Build can only be ran manually or on PR to main
+```yaml
+name: 'Terraform Plan'
+
+#Allow run manually or on push to main or in PR closure
 on:
   push:
     branches:
@@ -71,6 +73,7 @@ jobs:
           checkov-skipped-tests: "CKV_AZURE_2"
           run-terraform-destroy: "false"
           run-terraform-plan-only: "true"
+
 ```
 
 ### Logic

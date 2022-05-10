@@ -18,11 +18,6 @@ parameters:
     default: "Dockerfile"
     type: string
 
-  - name: NORMAL_USER
-    displayName: "The name for the container user"
-    default: "lbdo"
-    type: string
-
   - name: REGISTRY
     displayName: "The target registry"
     default: "ghcr.io"
@@ -63,8 +58,6 @@ jobs:
           docker build `
           --file=${{ parameters.DOCKERFILE_NAME }} `
           --tag="${{ parameters.REGISTRY }}/${{ parameters.USERNAME }}/${{ parameters.IMAGE_NAME }}$${{ parameters.TAGS }}" `
-          --build-arg ACCEPT_EULA=y `
-          --build-arg NORMAL_USER=${{ parameters.NORMAL_USER }} `
           . ; `
   
           docker push "${{ parameters.REGISTRY }}/${{ parameters.USERNAME }}/${{ parameters.IMAGE_NAME }}${{ parameters.TAGS }}"
