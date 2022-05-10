@@ -93,6 +93,7 @@ if run-terraform-destroy = run AND run-terraform-plan-only = false == Run terraf
   terraform-workspace-name:
     description: 'The name of a terraform workspace, should be in plain text string
     required: true
+    
   terraform-backend-storage-rg-name:
     description: 'The name of resource group your storage account exists in,  needed for state file storage'
     required: true
