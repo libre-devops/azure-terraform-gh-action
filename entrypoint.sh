@@ -137,7 +137,7 @@ if [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}"  =
         terraform plan -out pipeline.plan && \
         terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
         tfsec && \
-        terraform show -json pipeline.plan | tee pipeline.plan.json && \
+        terraform show -json pipeline.plan | tee pipeline.plan.json >/dev/null && \
         checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
         print_success "Build ran successfully" || print_error "Build Failed"
@@ -159,7 +159,7 @@ elif [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}" 
         terraform plan -out pipeline.plan && \
         terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
         tfsec && \
-        terraform show -json pipeline.plan | tee pipeline.plan.json && \
+        terraform show -json pipeline.plan | tee pipeline.plan.json >/dev/null && \
         checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
         terraform apply -auto-approve pipeline.plan
