@@ -78,7 +78,6 @@ else
     print_error "Variable assignment for provider client secret has failed or is invalid, ensure it is correct and try again - Error LDO_TF_AZURERM_PROVIDER_CLIENT_SECRET" && exit 1
 fi
 
-
 if [[ -n "${10}" ]]; then
     terraform_provider_client_subscription_id="${10}"
 else
@@ -135,12 +134,19 @@ if [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}"  =
     terraform validate && \
 
         terraform plan -out pipeline.plan && \
+
         print_alert "Running terraform-compliance now..."
+
     terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
+
         print_alert "Running tfsec now..."
+
     tfsec && \
+
         terraform show -json pipeline.plan | tee pipeline.plan.json >/dev/null && \
+
         print_alert "Running checkov now..."
+
     checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
         print_success "Build ran successfully" || print_error "Build Failed"
@@ -160,15 +166,24 @@ elif [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}" 
     terraform validate && \
 
         terraform plan -out pipeline.plan && \
+
         print_alert "Running terraform-compliance now..."
+
     terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
+
         print_alert "Running tfsec now..."
+
     tfsec && \
+
         terraform show -json pipeline.plan | tee pipeline.plan.json >/dev/null && \
+
         print_alert "Running checkov now..."
+
     checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
 
-        terraform apply -auto-approve pipeline.plan
+        print_alert "Running terraform apply now..."
+
+    terraform apply -auto-approve pipeline.plan
 
     print_success "Build ran successfully" || print_error "Build Failed"
 
@@ -190,6 +205,7 @@ elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  
 
         print_success "Build ran successfully" || print_error "Build Failed"
 
+    # Run terraform plan -destroy and terraform apply
 elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  = "false" ]; then
 
     terraform init \
@@ -204,7 +220,10 @@ elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  
     terraform validate && \
 
         terraform plan -destroy -out pipeline.plan && \
-        terraform apply -auto-approve pipeline.plan
+
+        print_alert "Running terraform apply now...  Note, this is a terraform destroy run"
+
+    terraform apply -auto-approve pipeline.plan
 
     print_success "Build ran successfully" || print_error "Build Failed"
 
