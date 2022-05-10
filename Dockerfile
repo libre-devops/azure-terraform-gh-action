@@ -57,7 +57,8 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
     brew install cowsay
 
 USER root
-RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew
+RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew && \
+    chmod
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
@@ -75,13 +76,13 @@ RUN echo $PATH > /etc/environment
 RUN echo 'alias powershell="pwsh"' >> /home/${NORMAL_USER}/.bashrc && \
     echo 'alias powershell="pwsh"' >> /root/.bashrc
 
-COPY entrypoint.sh /home/${NORMAL_USER}/entrypoint.sh
-RUN chmod +rx /home/${NORMAL_USER}/entrypoint.sh
+COPY entrypoint.sh /ldo/entrypoint.sh
+RUN chmod 777 -R /ldo
 
 USER ${NORMAL_USER}
 
 RUN brew install tfsec python3 terraform azure-cli
 RUN pip3 install --user terraform-compliance checkov
 
-WORKDIR /home/${NORMAL_USER}
-ENTRYPOINT /home/$NORMAL_USER/entrypoint.sh
+WORKDIR /ldo
+ENTRYPOINT ["/ldo/entrypoint.sh"]
