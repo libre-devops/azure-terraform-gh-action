@@ -104,9 +104,15 @@ if [[ ! -z "${13}" ]]; then
 fi
 
 if [[ ! -z "${14}" ]]; then
-    run_terrafrom_destroy="${14}"
+    run_terraform_destroy="${14}"
     else
     print_error "Terraform destroy is empty, it must be either true or false - change this and try again - Error code - LDO_TF_TERRAFORM_DESTROY" && exit 1
+fi
+
+if [[ ! -z "${15}" ]]; then
+    run_terraform_plan_only="${15}"
+    else
+    print_error "Terraform Plan only is empty, it must be either true or false - change this and try again - Error code - LDO_TF_TERRAFORM_PLAN_ONLY" && exit 1
 fi
 
 export ARM_CLIENT_ID="${terraform_provider_client_id}"
@@ -114,7 +120,30 @@ export ARM_CLIENT_SECRET="${terraform_provider_client_secret}"
 export ARM_SUBSCRIPTION_ID="${terraform_provider_client_subscription_id}"
 export ARM_TENANT_ID="${terraform_provider_client_tenant_id}"
 
-if [ "${run_terrafrom_destroy}" = "false" ]; then
+
+
+if [ "${run_terrafrom_destroy}" = "false" && "${run_terraform_plan_only}" = "true" ]; then
+
+terraform init \
+-backend-config="resource_group_name=${terraform_backend_sa_rg_name}" \
+-backend-config="storage_account_name=${terraform_backend_sa_name}" \
+-backend-config="access_key=${terraform_backend_storage_access_key}" \
+-backend-config="container_name=${terraform_backend_blob_container_name}" \
+-backend-config="key=${terraform_backend_state_name}" && \
+
+terraform workspace new "${terraform_workspace_name}" || terraform workspace select "${terraform_workspace_name}"
+
+terraform validate && \
+
+terraform plan -out pipeline.plan && \
+terraform-compliance -p pipeline.plan -f "${terraform_compliance_path}" && \
+tfsec && \
+terraform show -json pipeline.plan | tee pipeline.plan.json && \
+checkov -f pipeline.plan.json --skip-check "${checkov_skipped_test}" && \
+
+print_success "Build ran sccessfully" || print_error "Build Failed"
+
+elif [ "${run_terrafrom_destroy}" = "false" && "${run_terraform_plan_only}" = "false" ]; then
 
 terraform init \
 -backend-config="resource_group_name=${terraform_backend_sa_rg_name}" \
@@ -137,7 +166,24 @@ terraform apply -auto-approve pipeline.plan
 
 print_success "Build ran sccessfully" || print_error "Build Failed"
 
-elif [ "${run_terrafrom_destroy}" = "true" ]; then
+elif [ "${run_terrafrom_destroy}" = "true" && "${run_terraform_plan_only}" = "true" ]; then
+
+terraform init \
+-backend-config="resource_group_name=${terraform_backend_sa_rg_name}" \
+-backend-config="storage_account_name=${terraform_backend_sa_name}" \
+-backend-config="access_key=${terraform_backend_storage_access_key}" \
+-backend-config="container_name=${terraform_backend_blob_container_name}" \
+-backend-config="key=${terraform_backend_state_name}" && \
+
+terraform workspace new "${terraform_workspace_name}" || terraform workspace select "${terraform_workspace_name}"
+
+terraform validate && \
+
+terraform plan -destroy -out pipeline.plan && \
+
+print_success "Build ran sccessfully" || print_error "Build Failed"
+
+elif [ "${run_terrafrom_destroy}" = "true" && "${run_terraform_plan_only}" = "false" ]; then
 
 terraform init \
 -backend-config="resource_group_name=${terraform_backend_sa_rg_name}" \
