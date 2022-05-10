@@ -126,8 +126,7 @@ terraform init \
 -backend-config="container_name=${terraform_backend_blob_container_name}" \
 -backend-config="key=${terraform_backend_state_name}" && \
 
-terraform workspace new "${terraform_workspace_name}" && \
-terraform workspace select "${terraform_workspace_name}" && \
+terraform workspace new "${terraform_workspace_name}" || terraform workspace select "${terraform_workspace_name}"
 
 terraform validate && \
 
@@ -150,8 +149,7 @@ terraform init \
 -backend-config="container_name=${terraform_backend_blob_container_name}" \
 -backend-config="key=${terraform_backend_state_name}" && \
 
-terraform workspace new "${terraform_workspace_name}" && \
-terraform workspace select "${terraform_workspace_name}" && \
+terraform workspace new "${terraform_workspace_name}" || terraform workspace select "${terraform_workspace_name}"
 
 terraform validate && \
 
