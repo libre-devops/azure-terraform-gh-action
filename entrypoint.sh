@@ -120,8 +120,6 @@ export ARM_CLIENT_SECRET="${terraform_provider_client_secret}"
 export ARM_SUBSCRIPTION_ID="${terraform_provider_client_subscription_id}"
 export ARM_TENANT_ID="${terraform_provider_client_tenant_id}"
 
-
-
 if [ "${run_terrafrom_destroy}" = "false" && "${run_terraform_plan_only}" = "true" ]; then
 
 terraform init \
@@ -202,4 +200,3 @@ terraform apply -auto-approve pipeline.plan
 print_success "Build ran sccessfully" || print_error "Build Failed"
 
 fi
-
