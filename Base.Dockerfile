@@ -56,7 +56,7 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
     brew install cowsay
 
 USER root
-RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew && \
+RUN sudo chown -R ${NORMAL_USER} /home/linuxbrew/.linuxbrew
 
 USER ${NORMAL_USER}
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/${NORMAL_USER}/.bash_profile && \
