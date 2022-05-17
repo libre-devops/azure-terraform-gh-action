@@ -238,10 +238,6 @@ elif [ "${run_terraform_destroy}" = "true" ] && [ "${run_terraform_plan_only}"  
 
     print_success "Build ran successfully" || { print_error "Build Failed" ; exit 1; }
 
-else
-
-    print_error "Something went wrong with the build, check for errors and retry" ; exit 1
 
 fi
 
-   
