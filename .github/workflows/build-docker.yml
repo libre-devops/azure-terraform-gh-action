@@ -1,0 +1,40 @@
+name: 'Build Docker Container'
+
+#Allow run manually or on push to main or in PR closure
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  build-container-job:
+    name: 'Build Container'
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DOCKERFILE_NAME: "Base.Dockerfile"
+      TAGS: ":latest"
+      IMAGE_NAME: "azdo-terraform-gh-action-base"
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Container
+        id: build-container
+        run: |
+          docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} ${{ secrets.REGISTRY }} ; `
+
+          docker build `
+          --file=${{ env.DOCKERFILE_NAME }} `
+          --tag="${{ secrets.REGISTRY }}/${{ secrets.USERNAME }}/${{ env.IMAGE_NAME }}$${{ env.TAGS }}" `
+          . ; `
+
+          docker push "${{ secrets.REGISTRY }}/${{ secrets.USERNAME }}/${{ env.IMAGE_NAME }}${{ env.TAGS }}"
