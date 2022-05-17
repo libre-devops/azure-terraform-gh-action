@@ -17,7 +17,7 @@ jobs:
     env:
       DOCKERFILE_NAME: "Base.Dockerfile"
       TAGS: ":latest"
-      IMAGE_NAME: "azdo-terraform-gh-action-base"
+      IMAGE_NAME: "azure-terraform-gh-action-base"
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
