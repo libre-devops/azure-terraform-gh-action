@@ -130,9 +130,6 @@ export ARM_CLIENT_SECRET="${terraform_provider_client_secret}"
 export ARM_SUBSCRIPTION_ID="${terraform_provider_client_subscription_id}"
 export ARM_TENANT_ID="${terraform_provider_client_tenant_id}"
 
-exitCode=$?
-if [ $exitCode -ne 0 ];
-
 # Run Terraform Plan Only
 if [ "${run_terraform_destroy}" = "false" ] && [ "${run_terraform_plan_only}"  = "true" ]; then
 
@@ -245,12 +242,4 @@ else
 
     print_error "Something went wrong with the build, check for errors and retry" ; exit 1
 
-fi
-
-then
-
-    print_error "Something went wrong with the build, check for errors and retry" ; exit 1
-
-else
-    print_success "No errors have been detected, manually check the output just to be sure" && exit 0
 fi
