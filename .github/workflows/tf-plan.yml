@@ -2,11 +2,6 @@ name: 'Terraform Plan'
 
 #Allow run manually or on push to main or in PR closure
 on:
-  push:
-    branches:
-    - main
-  pull_request:
-    types: [closed]
   workflow_dispatch:
 
 jobs:
