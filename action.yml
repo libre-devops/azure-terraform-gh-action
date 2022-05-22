@@ -70,6 +70,11 @@ inputs:
     required: true
     default: "true"
 
+  terraform-version:
+    description: 'Which version of terraform should be installed or used? Defaults to latest'
+    required: true
+    default: "latest"
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -89,3 +94,4 @@ runs:
     - ${{ inputs.checkov-skipped-tests }}
     - ${{ inputs.run-terraform-destroy }}
     - ${{ inputs.run-terraform-plan-only }}
+    - ${{ inputs.terraform-version }}

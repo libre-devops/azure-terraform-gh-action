@@ -39,8 +39,9 @@ RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/instal
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/linuxbrew/.bashrc && \
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-RUN brew install tfsec python3 terraform tree
-RUN pip3 install terraform-compliance checkov
+RUN brew install tfsec python3 tfenv tree
+RUN pip3 install terraform-compliance checkov && \
+    tfenv install latest
 
 USER root 
 

@@ -125,6 +125,15 @@ else
     print_error "Terraform Plan only is empty, it must be either true or false - change this and try again - Error code - LDO_TF_TERRAFORM_PLAN_ONLY" ; exit 1
 fi
 
+if [[ -n "${16}" ]]; then
+    terraform_version="${16}"
+    tfenv install "${terraform_version}" && tfenv use "${terraform_version}"
+else
+    print_alert "Terraform Version is empty, by default, this pipeline will use the latest if it is set as empty, otherwise, you must specify a canonical type version. Error code - LDO_TF_TERRAFORM_VERSION"
+    tfenv install latest && tfenv use latest
+fi
+
+
 export ARM_CLIENT_ID="${terraform_provider_client_id}"
 export ARM_CLIENT_SECRET="${terraform_provider_client_secret}"
 export ARM_SUBSCRIPTION_ID="${terraform_provider_client_subscription_id}"
