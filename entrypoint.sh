@@ -26,9 +26,6 @@ print_alert "tfsec version = $(print_success "$(tfsec --version)")"
 print_alert "terraform-compliance version below"
 terraform-compliance --version
 
-print_alert "terraform version below"
-terraform -v
-
 # Prepare variables with better common names
 if [[ -n "${1}" ]]; then
     terraform_path="${1}" && \
